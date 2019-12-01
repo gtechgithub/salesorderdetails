@@ -1,21 +1,19 @@
 package com.storeorder.util;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.charset.Charset;
-import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Stream;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.storeorder.models.StoreOrderDetails;
@@ -25,27 +23,30 @@ public class csvStoreOrderReader {
 
 	private List<StoreOrderDetails> salesDetailList;
 
+	@Autowired
+	PropertyFileConfigurer propertyConfig;
+
 	public List<StoreOrderDetails> getSalesDetailList() {
-		return (null==salesDetailList?Collections.emptyList():salesDetailList);
+		return (null == salesDetailList ? Collections.emptyList() : salesDetailList);
 	}
 
-	public  void parseCSV() throws FileNotFoundException, IOException {
+	public void parseCSV() throws FileNotFoundException, IOException {
 		salesDetailList = new ArrayList<StoreOrderDetails>();
-		
-		File file = new File(
-				getClass().getClassLoader().getResource("sales.csv").getFile()
-			);
-		
-		CSVParser parser = CSVParser.parse(file,Charset.defaultCharset(),CSVFormat.DEFAULT.withHeader());
+
+		// read from classpath resources
+		// File file = File(getClass().getClassLoader().getResource(csvFile).getFile());
+
+		Path path = Paths.get(propertyConfig.getCsvfileNamepath());
+
+		CSVParser parser = CSVParser.parse(path, Charset.defaultCharset(), CSVFormat.DEFAULT.withHeader());
 		parser.forEach(salesInformation -> populateSalesDetail(salesInformation));
 		parser.close();
 	}
 
-	
-	private void populateSalesDetail(CSVRecord  csvRecord )
-	{
+	private void populateSalesDetail(CSVRecord csvRecord) {
 		StoreOrderDetails storeOrderDetails = new StoreOrderDetails();
-		
+
+		//populate details from csvrecord
 		storeOrderDetails.setRowId(Integer.parseInt(csvRecord.get("Row ID")));
 		storeOrderDetails.setOrderId(csvRecord.get("Order ID"));
 		storeOrderDetails.setCategoty(csvRecord.get("Category"));
@@ -72,4 +73,3 @@ public class csvStoreOrderReader {
 		salesDetailList.add(storeOrderDetails);
 	}
 }
-
