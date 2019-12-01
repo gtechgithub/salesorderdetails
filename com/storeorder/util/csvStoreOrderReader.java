@@ -1,3 +1,20 @@
+Skip to content
+Search or jump to…
+
+Pull requests
+Issues
+Marketplace
+Explore
+ 
+@gtechgithub 
+1
+00gtechgithub/salesorderdetails Private
+ Code Issues 0 Pull requests 0 Actions Projects 0 Security Insights Settings
+salesorderdetails/com/storeorder/util/csvStoreOrderReader.java
+@gtechgithub gtechgithub Create csvStoreOrderReader.java
+f70f4e5 yesterday
+74 lines (61 sloc)  2.86 KB
+  
 package com.storeorder.util;
 
 import java.io.File;
@@ -72,3 +89,4 @@ public class csvStoreOrderReader {
 		salesDetailList.add(storeOrderDetails);
 	}
 }
+
