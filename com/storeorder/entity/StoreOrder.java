@@ -9,18 +9,25 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 @Entity
-@Table (name = "store_order")
+@Table (name = "store_order",
+uniqueConstraints = {
+	      @UniqueConstraint(columnNames = "ORDER_ID"),
+	      @UniqueConstraint(columnNames = "PRODUCT_ID"),
+	      @UniqueConstraint(columnNames = "CUSTOMER_ID")
+	   })
+
 public class StoreOrder {
 
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "id", updatable = false, nullable = false)
 	private int id;
 	
-	@Column(name = "ORDER_ID",unique = true, nullable = false,length = 20)
+	@Column(name = "ORDER_ID", nullable = false,length = 20)
 	private String orderId;
 	
 	@Column(name = "ORDER_DATE",nullable = false)
@@ -41,7 +48,7 @@ public class StoreOrder {
 	@Column(name = "PROFIT", precision = 6, scale = 2, nullable = false)
 	private BigDecimal profit ;
 	
-	@Column(name = "PRODUCT_ID",unique = true, nullable = false)
+	@Column(name = "PRODUCT_ID",nullable = false)
 	private String productId ;
 	
 	@Column(name = "CUSTOMER_NAME",nullable = false)
@@ -50,7 +57,7 @@ public class StoreOrder {
 	@Column(name = "CATEGORY",nullable = false)
 	private String category ;
 	
-	@Column(name = "CUSTOMER_ID",unique = true, nullable = false)
+	@Column(name = "CUSTOMER_ID",nullable = false)
 	private String customerID ;
 
 	@Column(name = "PRODUCT_NAME")
